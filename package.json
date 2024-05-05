@@ -1,0 +1,37 @@
+{
+  "name": "roll-node",
+  "version": "0.1.0",
+  "description": "roll Node.js lib",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint ./src/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roll-social-network/roll-node.git"
+  },
+  "keywords": [
+    "roll",
+    "node",
+    "lib",
+    "api"
+  ],
+  "author": "roll devs <devs@r.oll.world>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/roll-social-network/roll-node/issues"
+  },
+  "homepage": "https://github.com/roll-social-network/roll-node#readme",
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "axios": "^1.6.8"
+  }
+}
