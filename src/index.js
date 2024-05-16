@@ -13,13 +13,7 @@ class Roll {
     if (typeof location === 'undefined') {
       return null
     }
-    const currentHost = location.host
-    if (!currentHost.startsWith('sso.')) {
-      return null
-    }
-    const protocol = location.protocol
-    const host = currentHost.replace(/^sso./, '')
-    return `${protocol}//${host}`
+    return `${location.protocol}//${location.host}`
   }
 
   static resolveBaseUrl () {
@@ -44,30 +38,27 @@ class Roll {
   }
 
   static resolveApiUrl ({ baseUrl }) {
-    const apiUrl = Roll.resolveApiUrlFromEnvVars() || Roll.resolveApiUrlFromBaseUrl({ baseUrl })
+    const apiUrl = Roll.resolveApiUrlFromBaseUrl({ baseUrl }) || Roll.resolveApiUrlFromEnvVars()
     if (!apiUrl) {
       throw new APIURLNotResolvedError()
     }
     return apiUrl
   }
 
-  constructor ({ apiUrl, baseUrl } = { apiUrl: null, baseUrl: null }) {
-    this.apiUrl = apiUrl || Roll.resolveApiUrl({ baseUrl })
+  constructor ({ apiUrl, baseUrl, rollDomain } = { apiUrl: null, baseUrl: null, rollDomain: undefined }) {
+    const baseURL = apiUrl || Roll.resolveApiUrl({ baseUrl })
     this.axios = axios.create({
-      baseURL: this.apiUrl,
-      withCredentials: true
+      baseURL,
+      withCredentials: true,
+      headers: {
+        host: rollDomain
+      }
     })
   }
 
   async getCurrentSite () {
     const response = await this.axios.get('/sites/current/')
     return response.data
-  }
-
-  toJSON () {
-    return {
-      apiUrl: this.apiUrl
-    }
   }
 }
 
