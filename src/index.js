@@ -60,6 +60,24 @@ class Roll {
     const response = await this.axios.get('/sites/current/')
     return response.data
   }
+
+  async getCurrentUser () {
+    const response = await this.axios.get(
+      '/users/current/',
+      { validateStatus: (status) => ([200, 403].indexOf(status) >= 0) }
+    )
+    const {
+      username,
+      full_name: fullName,
+      date_joined: dateJoined,
+    } = response.data
+    return {
+      username,
+      fullName,
+      dateJoined,
+      authenticated: response.status === 200,
+    }
+  }
 }
 
 export * from './errors'

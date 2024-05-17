@@ -10,11 +10,19 @@ declare module 'roll-node' {
     name: string;
   };
 
+  type CurrentUser = {
+    username?: string;
+    fullName?: string;
+    dateJoined?: string;
+    authenticated: boolean;
+  };
+
   export class APIURLNotResolvedError extends Error {}
 
   export default class Roll {
     constructor (options?: Options)
 
     getCurrentSite(): CurrentSite
+    getCurrentUser(): CurrentUser
   }
 }
