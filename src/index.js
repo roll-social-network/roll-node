@@ -67,7 +67,7 @@ class Roll {
   async getCurrentUser () {
     const response = await this.axios.get(
       '/users/current/',
-      { validateStatus: (status) => ([200, 403].indexOf(status) >= 0) }
+      { validateStatus: (status) => ([200, 403].includes(status)) }
     )
     const {
       username,
