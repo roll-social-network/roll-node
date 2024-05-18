@@ -26,6 +26,10 @@ declare module 'roll-node' {
     availableMethods: LoginMethods[];
   };
 
+  type Authenticated = {
+    user: CurrentUser;
+  };
+
   export class APIURLNotResolvedError extends Error {}
   export class FormValidationError extends Error { fields: { [key: string]: string[] } }
 
@@ -36,5 +40,6 @@ declare module 'roll-node' {
     getCurrentUser(): CurrentUser
     initLogin(phoneNumber: string): InitLogin
     requestVerificationCode(phoneNumber: string): boolean
+    verifyVerificationCode(phoneNumber: string, code: string): Authenticated
   }
 }

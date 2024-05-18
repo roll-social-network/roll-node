@@ -94,7 +94,7 @@ class Roll {
         availableMethods: available_methods
       }
     } catch (e) {
-      if (e instanceof axios.AxiosError && e.response.status === 400) {
+      if (e instanceof axios.AxiosError && e.response?.status === 400) {
         throw new FormValidationError({ phoneNumber: e.response.data.phone_number })
       }
       throw e
@@ -111,8 +111,36 @@ class Roll {
       )
       return true
     } catch (e) {
-      if (e instanceof axios.AxiosError && e.response.status === 400) {
+      if (e instanceof axios.AxiosError && e.response?.status === 400) {
         throw new FormValidationError({ phoneNumber: e.response.data.phone_number })
+      }
+      throw e
+    }
+  }
+
+  async verifyVerificationCode(phoneNumber, code) {
+    const data = {
+      phone_number: phoneNumber,
+      code
+    }
+    try {
+      const response = await this.axios.post(
+        '/verify-verification-code/',
+        data
+      )
+      return response.data
+    } catch (e) {
+      if (e instanceof axios.AxiosError && e.response?.status === 400) {
+        const {
+          non_field_errors: nonFieldErrors,
+          phone_number: phoneNumber,
+          code,
+        } = e.response.data
+        throw new FormValidationError({
+          nonFieldErrors,
+          phoneNumber,
+          code,
+        })
       }
       throw e
     }
