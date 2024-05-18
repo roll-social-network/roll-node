@@ -1,5 +1,8 @@
 import axios from 'axios'
-import { APIURLNotResolvedError } from './errors'
+import {
+  APIURLNotResolvedError,
+  FormValidationError,
+ } from './errors'
 
 class Roll {
   static resolveBaseUrlFromEnvVars () {
@@ -78,6 +81,30 @@ class Roll {
       authenticated: response.status === 200,
     }
   }
+
+  async initLogin(phoneNumber) {
+    const data = { phone_number: phoneNumber }
+    try {
+      const response = await this.axios.post(
+        '/login/',
+        data
+      )
+      const { available_methods } = response.data
+      return {
+        availableMethods: available_methods
+      }
+    } catch (e) {
+      if (e instanceof axios.AxiosError && e.response.status === 400) {
+        throw new FormValidationError({ phoneNumber: e.response.data.phone_number })
+      }
+      throw e
+    }
+  }
+}
+
+export class LoginMethods {
+  static VERIFICATION_CODE = "VERIFICATION_CODE"
+  static OTP_CODE = "OTP_CODE"
 }
 
 export * from './errors'

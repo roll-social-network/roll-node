@@ -17,12 +17,23 @@ declare module 'roll-node' {
     authenticated: boolean;
   };
 
+  enum LoginMethods {
+    VERIFICATION_CODE = "VERIFICATION_CODE",
+    OTP_CODE = "OTP_CODE",
+  };
+
+  type InitLogin = {
+    availableMethods: LoginMethods[];
+  };
+
   export class APIURLNotResolvedError extends Error {}
+  export class FormValidationError extends Error { fields: { [key: string]: string[] } }
 
   export default class Roll {
     constructor (options?: Options)
 
     getCurrentSite(): CurrentSite
     getCurrentUser(): CurrentUser
+    initLogin(phoneNumber: string): InitLogin
   }
 }

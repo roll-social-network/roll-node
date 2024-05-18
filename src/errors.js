@@ -4,6 +4,13 @@ export class APIURLNotResolvedError extends Error {
   }
 }
 
+export class FormValidationError extends Error {
+  constructor (fields) {
+    super(`Form Validation Error: ${JSON.stringify(fields)}`)
+    this.fields = fields
+  }
+}
+
 export default {
   APIURLNotResolvedError
 }
