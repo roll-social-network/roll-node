@@ -20,7 +20,7 @@ declare module 'roll-node' {
   enum LoginMethods {
     VERIFICATION_CODE = "VERIFICATION_CODE",
     OTP_CODE = "OTP_CODE",
-  };
+  }
 
   type InitLogin = {
     availableMethods: LoginMethods[];
@@ -35,5 +35,6 @@ declare module 'roll-node' {
     getCurrentSite(): CurrentSite
     getCurrentUser(): CurrentUser
     initLogin(phoneNumber: string): InitLogin
+    requestVerificationCode(phoneNumber: string): boolean
   }
 }

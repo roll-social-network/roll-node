@@ -100,6 +100,23 @@ class Roll {
       throw e
     }
   }
+
+  async requestVerificationCode(phoneNumber) {
+    const data = { phone_number: phoneNumber }
+    try {
+      await this.axios.post(
+        '/request-verification-code/',
+        data,
+        { validateStatus: (status) => (status === 202) }
+      )
+      return true
+    } catch (e) {
+      if (e instanceof axios.AxiosError && e.response.status === 400) {
+        throw new FormValidationError({ phoneNumber: e.response.data.phone_number })
+      }
+      throw e
+    }
+  }
 }
 
 export class LoginMethods {
