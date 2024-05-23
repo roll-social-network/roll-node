@@ -11,6 +11,10 @@ export class FormValidationError extends Error {
   }
 }
 
+export class OAuth2AuthorizeError extends Error {}
+
 export default {
-  APIURLNotResolvedError
+  APIURLNotResolvedError,
+  FormValidationError,
+  OAuth2AuthorizeError
 }

@@ -3,6 +3,7 @@ declare module 'roll-node' {
     apiUrl?: string;
     baseUrl?: string;
     rollDomain?: string;
+    userToken?: string;
   };
 
   type CurrentSite = {
@@ -27,7 +28,39 @@ declare module 'roll-node' {
   };
 
   type Authenticated = {
+    token: string;
     user: CurrentUser;
+  };
+
+  type AuthorizeParams = {
+    [key: string]: string;
+  };
+
+  enum ApprovalPrompt {
+    FORCE = "force",
+    AUTO = "auto",
+  }
+
+  type OAuth2Application = {
+    clientId: string;
+    name: string;
+    skipAuthorization: boolean;
+  };
+
+  type Authorize = {
+    approvalPrompt: ApprovalPrompt;
+    redirectUri: string;
+    responseType: string;
+    state: string;
+    codeChallenge: string;
+    codeChallengeMethod: string;
+    nonce: string;
+    scopes: { [scope: string]: string };
+    application: OAuth2Application;
+  };
+
+  type Authorized = {
+    uri: string;
   };
 
   export class APIURLNotResolvedError extends Error {}
@@ -41,5 +74,7 @@ declare module 'roll-node' {
     initLogin(phoneNumber: string): InitLogin
     requestVerificationCode(phoneNumber: string): boolean
     verifyVerificationCode(phoneNumber: string, code: string): Authenticated
+    authorize(params: AuthorizeParams, allow?: false): Authorize
+    authorize(params: AuthorizeParams, allow: true): Authorized
   }
 }
